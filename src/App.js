@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import PageRender from "./PageRender";
-// import HomePage from "./pages/HomePage";
-// import Login from "./pages/login";
+// import HomePage from "./pages/home";
+import Login from "./pages/login";
 // import NotFoundPage from "./pages/NotFoundPage";
 // import Register from "./pages/register";
 
@@ -16,6 +16,7 @@ function App() {
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
             <Route component={NotFoundPage} /> */}
+            <Route exact path="/" component={Login} />
             <Route exact path="/:page" component={PageRender} />
             <Route exact path="/:page/:id" component={PageRender} />
           </Switch>
