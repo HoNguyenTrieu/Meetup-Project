@@ -7,8 +7,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const URI = process.env.MONGODB_URL;
 
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
+const authRouter = require("./routes/authRouter");
 
 var app = express();
 
@@ -34,7 +33,7 @@ app.use(cookieParser());
 app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
+// Routes
+app.use("/api", authRouter);
 
 module.exports = app;
