@@ -24,11 +24,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    avartar: {
+    avatar: {
       type: String,
       required: false,
       default:
-        "https://www.pinclipart.com/picdir/middle/78-780477_about-us-avatar-icon-red-png-clipart.png",
+        "https://listimg.pinclipart.com/picdir/s/38-388919_computer-icons-user-profile-clip-art-avatar-user.png",
     },
     role: { type: String, default: "user" },
     gender: { type: String, default: "male" },
