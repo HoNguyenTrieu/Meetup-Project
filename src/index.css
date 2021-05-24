@@ -14,11 +14,6 @@ code {
     monospace;
 }
 
-body {
-  background-color: #141019;
-  background: radial-gradient(at 50% -20%, #908392, #0d060e) fixed;
-}
-
 #theme {
   display: none;
 }
@@ -39,8 +34,24 @@ body {
   margin: auto;
 }
 
+img {
+  object-fit: cover;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
 /* ------------------- Not Found Page --------------------- */
 @import url("./styles/notfound.css");
 
 /* ------------------- AUTH --------------------- */
 @import url("./styles/auth.css");
+
+/* ------------------- Loading --------------------- */
+@import url("./styles/loading.css");
+
+/* ------------------- Header --------------------- */
+@import url("./styles/header.css");

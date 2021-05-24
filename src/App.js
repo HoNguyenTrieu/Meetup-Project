@@ -1,25 +1,30 @@
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { useEffect } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { refreshToken } from "./redux/actions/authAction";
 import PageRender from "./PageRender";
-// import HomePage from "./pages/home";
+import HomePage from "./pages/home";
 import Login from "./pages/login";
-// import NotFoundPage from "./pages/NotFoundPage";
-// import Register from "./pages/register";
+import AlertMsg from "./components/alert/AlertMsg";
+import Header from "./components/Header";
 
 function App() {
+  const { auth } = useSelector((state) => state);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(refreshToken());
+  }, [dispatch]);
   return (
     <Router>
+      <AlertMsg />
       <input type="checkbox" id="theme" />
       <div className="App">
         <div className="main">
-          <Switch>
-            {/* <Route exact path="/" component={HomePage} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/register" component={Register} />
-            <Route component={NotFoundPage} /> */}
-            <Route exact path="/" component={Login} />
-            <Route exact path="/:page" component={PageRender} />
-            <Route exact path="/:page/:id" component={PageRender} />
-          </Switch>
+          {auth.token && <Header />}
+          <Route exact path="/" component={auth.token ? HomePage : Login} />
+          <Route exact path="/:page" component={PageRender} />
+          <Route exact path="/:page/:id" component={PageRender} />
         </div>
       </div>
     </Router>
