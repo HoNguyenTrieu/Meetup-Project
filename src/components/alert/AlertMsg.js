@@ -11,8 +11,6 @@ const AlertMsg = () => {
   return (
     <div>
       {alert.loading && <Loading />}
-      {/* {notify.error && toast.error(notify.error)}
-      {notify.success && toast.success(notify.success)} */}
       {alert.error && (
         <ToastMsg
           msg={{ title: "Error", body: alert.error }}

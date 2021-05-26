@@ -38,12 +38,6 @@ img {
   object-fit: cover;
 }
 
-.avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-}
-
 /* ------------------- Not Found Page --------------------- */
 @import url("./styles/notfound.css");
 
@@ -55,3 +49,15 @@ img {
 
 /* ------------------- Header --------------------- */
 @import url("./styles/header.css");
+
+/* ------------------- Avatar --------------------- */
+@import url("./styles/avatar.css");
+
+/* ------------------- Profile --------------------- */
+@import url("./styles/profile.css");
+
+/* ------------------- Home --------------------- */
+@import url("./styles/home.css");
+
+/* ------------------- Status Modal --------------------- */
+@import url("./styles/status_modal.css");

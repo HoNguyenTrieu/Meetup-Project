@@ -1,10 +1,11 @@
 import React from "react";
-import { Toast } from "react-bootstrap";
 
 const ToastMsg = ({ msg, handleShow, bgColor }) => {
   return (
     <div
       className={`toast show position-fixed text-light ${bgColor}`}
+      data-delay="500"
+      data-autohide="true"
       id="myToast"
       style={{ top: "5px", right: "5px", minWidth: "200px", zIndex: 50 }}
     >
