@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: false,
       default:
-        "https://listimg.pinclipart.com/picdir/s/38-388919_computer-icons-user-profile-clip-art-avatar-user.png",
+        "https://www.pngkey.com/png/detail/202-2024792_user-profile-icon-png-download-fa-user-circle.png",
     },
     role: { type: String, default: "user" },
     gender: { type: String, default: "male" },
