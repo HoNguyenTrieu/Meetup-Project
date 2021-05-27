@@ -22,7 +22,9 @@ const commentController = {
       );
       await newComment.save();
       res.json({ newComment });
-    } catch (err) {}
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
   },
 };
 
