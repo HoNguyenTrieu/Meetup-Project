@@ -18,7 +18,7 @@ const AddComment = ({ children, post }) => {
       createdAt: new Date().toISOString(),
     };
     // console.log(newComment);
-    dispatch(createComment(post, newComment, auth));
+    dispatch(createComment({ post, newComment, auth }));
   };
 
   return (
