@@ -10,6 +10,7 @@ const URI = process.env.MONGODB_URL;
 const authRouter = require("./routes/authRouter");
 const userRouter = require("./routes/userRouter");
 const postRouter = require("./routes/postRouter");
+const commentRouter = require("./routes/commentRouter");
 
 var app = express();
 
@@ -39,5 +40,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/api", authRouter);
 app.use("/api", userRouter);
 app.use("/api", postRouter);
+app.use("/api", commentRouter);
 
 module.exports = app;
