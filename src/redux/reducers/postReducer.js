@@ -1,7 +1,10 @@
 import { POST_TYPES } from "../actions/postAction";
 
 const initialState = {
+  loading: false,
   posts: [],
+  result: 0,
+  page: 2,
 };
 
 const postReducer = (state = initialState, action) => {
@@ -9,7 +12,25 @@ const postReducer = (state = initialState, action) => {
     case POST_TYPES.CREATE_POST:
       return {
         ...state,
-        posts: [...state.posts, action.payload],
+        posts: [action.payload, ...state.posts],
+      };
+    case POST_TYPES.LOADING_POST:
+      return {
+        ...state,
+        loading: action.payload,
+      };
+    case POST_TYPES.GET_POSTS:
+      return {
+        ...state,
+        posts: action.payload.posts,
+        result: action.payload.result,
+      };
+    case POST_TYPES.UPDATE_POST:
+      return {
+        ...state,
+        posts: state.posts.map((post) =>
+          post._id === action.payload._id ? action.payload : post
+        ),
       };
     default:
       return state;

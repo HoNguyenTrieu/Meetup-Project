@@ -47,6 +47,7 @@ const EditProfile = ({ setOnEdit }) => {
       <button
         className="btn btn-danger btn_close"
         onClick={() => setOnEdit(false)}
+        style={{ filter: theme ? "invert(1)" : "invert(0)" }}
       >
         Close
       </button>
