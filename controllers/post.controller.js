@@ -1,5 +1,17 @@
 const Posts = require("../models/postModel");
 
+function APIfeatures(query, queryString) {
+  this.query = query;
+  this.queryString = queryString;
+}
+APIfeatures.prototype.paginating = function () {
+  const page = this.queryString.page * 1 || 1;
+  const limit = this.queryString.limit * 1 || 9;
+  const skip = (page - 1) * limit;
+  this.query = this.query.skip(skip).limit(limit);
+  return this;
+};
+
 const postController = {
   createPost: async (req, res) => {
     try {
@@ -25,10 +37,14 @@ const postController = {
   },
   getPosts: async (req, res) => {
     try {
-      // console.log(req.user);
-      const posts = await Posts.find({
-        user: [...req.user.following, req.user._id],
-      })
+      const features = new APIfeatures(
+        Posts.find({
+          user: [...req.user.following, req.user._id],
+        }),
+        req.query
+      ).paginating();
+
+      const posts = await features.query
         .sort("-createdAt")
         .populate("user likes", "avatar username fullname")
         .populate({
@@ -54,7 +70,15 @@ const postController = {
           content,
           images,
         }
-      ).populate("user likes", "avatar username fullname");
+      )
+        .populate("user likes", "avatar username fullname")
+        .populate({
+          path: "comments",
+          populate: {
+            path: "user likes",
+            select: "-password",
+          },
+        });
 
       res.json({
         msg: "Post Updated!",
@@ -106,6 +130,56 @@ const postController = {
       );
 
       res.json({ msg: "Unliked Post!" });
+    } catch (err) {
+      return res.status(500).json({
+        msg: err.message,
+      });
+    }
+  },
+  getUserPosts: async (req, res) => {
+    try {
+      const features = new APIfeatures(
+        Posts.find({ user: req.params.id }),
+        req.query
+      ).paginating();
+      const posts = await features.query.sort("-createdAt");
+      res.json({ posts, result: posts.length });
+    } catch (err) {
+      return res.status(500).json({
+        msg: err.message,
+      });
+    }
+  },
+  getPost: async (req, res) => {
+    try {
+      const post = await Posts.findById(req.params.id)
+        .populate("user likes", "avatar username fullname")
+        .populate({
+          path: "comments",
+          populate: {
+            path: "user likes",
+            select: "-password",
+          },
+        });
+      res.json({ post });
+    } catch (err) {
+      return res.status(500).json({
+        msg: err.message,
+      });
+    }
+  },
+  getPostsDicover: async (req, res) => {
+    try {
+      const features = new APIfeatures(
+        Posts.find({
+          user: { $nin: [...req.user.following, req.user._id] },
+        }),
+        req.query
+      ).paginating();
+
+      const posts = await features.query.sort("-createdAt");
+
+      res.json({ msg: "Success!", result: posts.length, posts });
     } catch (err) {
       return res.status(500).json({
         msg: err.message,
