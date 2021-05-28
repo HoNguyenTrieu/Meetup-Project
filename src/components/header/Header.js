@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Menu from "./Menu";
 import Search from "./Search";
+import Logo from "../../images/connect2.png";
 
 const Header = () => {
   return (
@@ -12,7 +13,7 @@ const Header = () => {
             className="navbar-brand text-uppercase p-0 m-0 "
             onClick={() => window.scrollTo({ top: 0 })}
           >
-            MeetUp-Network
+            <img src={Logo} alt="logo" width="48px" height="48px" /> Meet-Up
           </h1>
         </Link>
         <Search />

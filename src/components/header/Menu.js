@@ -19,26 +19,38 @@ const Menu = () => {
       <ul className="navbar-nav flex-row">
         <li className={`nav-item px-1 ${isActive("/")}`}>
           <Link className="nav-link" to="/">
-            <i className="fas fa-home "></i>
+            <i
+              className="fas fa-home text-danger"
+              style={{ filter: theme ? "invert(1)" : "invert(0)" }}
+            ></i>
           </Link>
         </li>
         <li className={`nav-item px-1 ${isActive("/message")}`}>
           <Link className="nav-link" to="/message">
-            <i className="fas fa-paper-plane"></i>
+            <i
+              className="fas fa-paper-plane text-danger"
+              style={{ filter: theme ? "invert(1)" : "invert(0)" }}
+            ></i>
           </Link>
         </li>
         <li className={`nav-item px-1 ${isActive("/discover")}`}>
           <Link className="nav-link" to="/discover">
-            <i className="fas fa-compass"></i>
+            <i
+              className="fas fa-compass text-danger"
+              style={{ filter: theme ? "invert(1)" : "invert(0)" }}
+            ></i>
           </Link>
         </li>
         <li className={`nav-item px-1 ${isActive("/notify")}`}>
           <Link className="nav-link" to="/notify">
-            <i className="fas fa-heart"></i>
+            <i
+              className="fas fa-heart text-danger"
+              style={{ filter: theme ? "invert(1)" : "invert(0)" }}
+            ></i>
           </Link>
         </li>
 
-        <li className="nav-item dropdown">
+        <li className="nav-item dropdown active">
           <span
             className="nav-link dropdown-toggle"
             id="navbarDropdown"

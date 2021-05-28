@@ -42,3 +42,48 @@ export const updateComment =
       });
     }
   };
+
+export const likeComment =
+  ({ comment, post, auth }) =>
+  async (dispatch) => {
+    const newComment = { ...comment, likes: [...comment.likes, auth.user] };
+    const newComments = post.comments.map((item) =>
+      item._id === comment._id ? newComment : item
+    );
+    const newPost = { ...post, comments: newComments };
+
+    dispatch({ type: POST_TYPES.UPDATE_POST, payload: newPost });
+
+    try {
+      await patchDataAPI(`comment/${comment._id}/like`, null, auth.token);
+    } catch (err) {
+      dispatch({
+        type: GLOBALTYPES.ALERT,
+        payload: { error: err.response.data.msg },
+      });
+    }
+  };
+
+export const unLikeComment =
+  ({ comment, post, auth }) =>
+  async (dispatch) => {
+    const newComment = {
+      ...comment,
+      likes: comment.likes.filter((item) => item._id !== auth.user._id),
+    };
+    const newComments = post.comments.map((item) =>
+      item._id === comment._id ? newComment : item
+    );
+    const newPost = { ...post, comments: newComments };
+
+    dispatch({ type: POST_TYPES.UPDATE_POST, payload: newPost });
+
+    try {
+      await patchDataAPI(`comment/${comment._id}/unlike`, null, auth.token);
+    } catch (err) {
+      dispatch({
+        type: GLOBALTYPES.ALERT,
+        payload: { error: err.response.data.msg },
+      });
+    }
+  };

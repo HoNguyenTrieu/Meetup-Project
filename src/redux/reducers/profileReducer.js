@@ -2,6 +2,7 @@ import { PROFILE_TYPES } from "../actions/profileAction";
 
 const initialState = {
   loading: false,
+  ids: [],
   users: [],
   posts: [],
 };
@@ -30,6 +31,23 @@ const profileReducer = (state = initialState, action) => {
         ...state,
         users: state.users.map((user) =>
           user._id === action.payload._id ? action.payload : user
+        ),
+      };
+    case PROFILE_TYPES.GET_ID:
+      return {
+        ...state,
+        ids: [...state.ids, action.payload],
+      };
+    case PROFILE_TYPES.GET_POSTS:
+      return {
+        ...state,
+        posts: [...state.posts, action.payload],
+      };
+    case PROFILE_TYPES.UPDATE_POST:
+      return {
+        ...state,
+        posts: state.posts.map((item) =>
+          item._id === action.payload._id ? action.payload : item
         ),
       };
     default:
