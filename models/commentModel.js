@@ -7,6 +7,8 @@ const commentModel = new mongoose.Schema(
     reply: { type: mongoose.Types.ObjectId },
     likes: [{ type: mongoose.Types.ObjectId, ref: "user" }],
     user: { type: mongoose.Types.ObjectId, ref: "user" },
+    postId: { type: mongoose.Types.ObjectId },
+    postUserId: { type: mongoose.Types.ObjectId },
   },
   { timestamps: true }
 );

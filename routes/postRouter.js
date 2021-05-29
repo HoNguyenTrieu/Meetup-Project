@@ -7,6 +7,7 @@ router.route("/posts").get(authMiddleware, postController.getPosts);
 
 router.route("/post/:id").patch(authMiddleware, postController.updatePost);
 router.route("/post/:id").get(authMiddleware, postController.getPost);
+router.route("/post/:id").delete(authMiddleware, postController.deletePost);
 
 router.patch("/post/:id/like", authMiddleware, postController.likePost);
 

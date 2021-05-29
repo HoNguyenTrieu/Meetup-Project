@@ -15,4 +15,6 @@ router.patch(
   commentController.unLikeComment
 );
 
+router.delete("/comment/:id", authMiddleware, commentController.deleteComment);
+
 module.exports = router;

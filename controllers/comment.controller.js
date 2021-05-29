@@ -4,13 +4,24 @@ const Posts = require("../models/postModel");
 const commentController = {
   createComment: async (req, res) => {
     try {
-      const { postId, content, tag, reply } = req.body;
+      const { postId, content, tag, reply, postUserId } = req.body;
+
+      const post = await Posts.findById(postId);
+      if (!post)
+        return res.status(400).json({ msg: "This post does not exist." });
+      if (reply) {
+        const cmt = await Comments.findById(reply);
+        if (!cmt)
+          return res.status(400).json({ msg: "The comment does not exist." });
+      }
 
       const newComment = new Comments({
         user: req.user._id,
         content,
         tag,
         reply,
+        postUserId,
+        postId,
       });
 
       await Posts.findOneAndUpdate(
@@ -76,6 +87,26 @@ const commentController = {
       );
 
       res.json({ msg: "Unliked Comment!" });
+    } catch (err) {
+      return res.status(500).json({
+        msg: err.message,
+      });
+    }
+  },
+  deleteComment: async (req, res) => {
+    try {
+      const comment = await Comments.findOneAndDelete({
+        _id: req.params.id,
+        $or: [{ user: req.user._id }, { postUserId: req.user._id }],
+      });
+
+      await Posts.findOneAndUpdate(
+        { _id: comment.postId },
+        {
+          $pull: { comments: req.params.id },
+        }
+      );
+      res.json({ msg: "Deleted Comment!" });
     } catch (err) {
       return res.status(500).json({
         msg: err.message,
