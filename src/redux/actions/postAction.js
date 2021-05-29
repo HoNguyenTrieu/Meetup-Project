@@ -1,5 +1,10 @@
 import { GLOBALTYPES } from "../constants/globalTypes";
-import { getDataAPI, patchDataAPI, postDataAPI } from "../../utils/fetchApi";
+import {
+  getDataAPI,
+  patchDataAPI,
+  postDataAPI,
+  deleteDataAPI,
+} from "../../utils/fetchApi";
 import { imageUpload } from "../../utils/imageUpload";
 
 export const POST_TYPES = {
@@ -8,6 +13,7 @@ export const POST_TYPES = {
   GET_POSTS: "GET_POSTS",
   UPDATE_POST: "UPDATE_POST",
   GET_POST: "GET_POST",
+  DELETE_POST: "DELETE_POST",
 };
 
 export const createPost =
@@ -136,5 +142,19 @@ export const getPost =
           payload: { error: err.response.data.msg },
         });
       }
+    }
+  };
+
+export const deletePost =
+  ({ post, auth }) =>
+  async (dispatch) => {
+    dispatch({ type: POST_TYPES.DELETE_POST, payload: post });
+    try {
+      deleteDataAPI(`post/${post._id}`, auth.token);
+    } catch (err) {
+      dispatch({
+        type: GLOBALTYPES.ALERT,
+        payload: { error: err.response.data.msg },
+      });
     }
   };

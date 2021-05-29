@@ -1,17 +1,34 @@
 import React from "react";
 import Avatar from "../Avatar";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 import { GLOBALTYPES } from "../../redux/constants/globalTypes";
+import { deletePost } from "../../redux/actions/postAction";
+import { BASE_URL } from "../../utils/config";
+import { confirm } from "react-bootstrap-confirmation";
 
 const CardHeader = ({ post }) => {
   const { auth } = useSelector((state) => state);
   const dispatch = useDispatch();
 
+  const history = useHistory();
+
   const handleEditPost = () => {
     console.log(post);
     dispatch({ type: GLOBALTYPES.STATUS, payload: { ...post, onEdit: true } });
+  };
+
+  const handleDeletePost = async () => {
+    const result = await confirm("Are you really sure?");
+    if (result) {
+      dispatch(deletePost({ post, auth }));
+      return history.push("/");
+    }
+  };
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(`${BASE_URL}/post/${post._id}`);
   };
 
   return (
@@ -40,13 +57,13 @@ const CardHeader = ({ post }) => {
               <div className="dropdown-item" onClick={handleEditPost}>
                 <span className="material-icons">create</span> Edit Post
               </div>
-              <div className="dropdown-item">
+              <div className="dropdown-item" onClick={handleDeletePost}>
                 <span className="material-icons">delete_outline</span> Remove
                 Post
               </div>
             </>
           )}
-          <div className="dropdown-item">
+          <div className="dropdown-item" onClick={handleCopyLink}>
             <span className="material-icons">content_copy</span> Copy Link
           </div>
         </div>

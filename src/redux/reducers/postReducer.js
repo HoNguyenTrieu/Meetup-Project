@@ -1,4 +1,5 @@
 import { POST_TYPES } from "../actions/postAction";
+import { DeleteData } from "../constants/globalTypes";
 
 const initialState = {
   loading: false,
@@ -32,6 +33,11 @@ const postReducer = (state = initialState, action) => {
         posts: state.posts.map((post) =>
           post._id === action.payload._id ? action.payload : post
         ),
+      };
+    case POST_TYPES.DELETE_POST:
+      return {
+        ...state,
+        posts: DeleteData(state.posts, action.payload._id),
       };
     default:
       return state;
