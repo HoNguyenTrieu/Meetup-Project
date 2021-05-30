@@ -7,12 +7,12 @@ const LikeButton = ({ isLike, handleLike, handleUnLike }) => {
     <>
       {isLike ? (
         <i
-          class="fas fa-kiss-wink-heart text-danger"
+          className="fas fa-kiss-wink-heart text-danger"
           onClick={handleUnLike}
           style={{ filter: theme ? "invert(1)" : "invert(0)" }}
         />
       ) : (
-        <i class="far fa-kiss-wink-heart" onClick={handleLike} />
+        <i className="far fa-kiss-wink-heart" onClick={handleLike} />
       )}
     </>
   );

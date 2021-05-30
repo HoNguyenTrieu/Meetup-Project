@@ -7,12 +7,12 @@ const LikeCmt = ({ isLike, handleLike, handleUnLike }) => {
     <>
       {isLike ? (
         <i
-          class="fas fa-thumbs-up text-danger"
+          className="fas fa-thumbs-up text-danger"
           onClick={handleUnLike}
           style={{ filter: theme ? "invert(1)" : "invert(0)" }}
         />
       ) : (
-        <i class="far fa-thumbs-up" onClick={handleLike} />
+        <i className="far fa-thumbs-up" onClick={handleLike} />
       )}
     </>
   );

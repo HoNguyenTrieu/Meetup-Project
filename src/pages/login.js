@@ -58,7 +58,7 @@ const Login = () => {
               onChange={handleChangeInput}
               value={password}
             />
-            {/* <i class="fas fa-eye" onClick={() => setTypePass(!typePass)}></i> */}
+            {/* <i className="fas fa-eye" onClick={() => setTypePass(!typePass)}></i> */}
             <small onClick={() => setTypePass(!typePass)}>
               {typePass ? "Hide" : "Show"}
             </small>
