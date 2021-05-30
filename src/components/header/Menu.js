@@ -50,7 +50,7 @@ const Menu = () => {
           </Link>
         </li>
 
-        <li className="nav-item dropdown active">
+        <li className="nav-item dropdown" style={{ opacity: 1 }}>
           <span
             className="nav-link dropdown-toggle"
             id="navbarDropdown"

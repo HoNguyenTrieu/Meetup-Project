@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import Posts from "../components/home/Posts";
+import RightSideSuggest from "../components/home/RightSideSuggest";
 import Status from "../components/home/Status";
 import LoadIcon from "../images/heartLoading.gif";
 
@@ -12,13 +13,15 @@ const Home = () => {
         <Status />
         {homePosts.loading ? (
           <img className="d-block mx-auto" src={LoadIcon} arc="loading" />
-        ) : homePosts.result === 0 ? (
+        ) : homePosts.result === 0 && homePosts.posts.length === 0 ? (
           <h2 className="text-center">No Post Yet!</h2>
         ) : (
           <Posts />
         )}
       </div>
-      <div className="col-md-4">right Sidebar</div>
+      <div className="col-md-4">
+        <RightSideSuggest />
+      </div>
     </div>
   );
 };
