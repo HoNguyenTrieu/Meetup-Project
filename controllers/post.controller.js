@@ -31,7 +31,10 @@ const postController = {
       });
       await newPost.save();
 
-      res.json({ msg: "Create Post!", newPost });
+      res.json({
+        msg: "Created Post!",
+        newPost: { ...newPost._doc, user: req.user },
+      });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
