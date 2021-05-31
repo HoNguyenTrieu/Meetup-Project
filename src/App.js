@@ -17,6 +17,7 @@ import { getSuggestions } from "./redux/actions/suggestionsAction";
 import io from "socket.io-client";
 import { GLOBALTYPES } from "./redux/constants/globalTypes";
 import SocketClient from "./components/SocketClient";
+import { getNotifies } from "./redux/actions/notifyAction";
 
 function App() {
   const { auth, status, modal } = useSelector((state) => state);
@@ -28,12 +29,15 @@ function App() {
     dispatch({ type: GLOBALTYPES.SOCKET, payload: socket });
     return () => socket.close();
   }, [dispatch]);
+
   useEffect(() => {
     if (auth.token) {
       dispatch(getPosts(auth.token));
       dispatch(getSuggestions(auth.token));
+      dispatch(getNotifies(auth.token));
     }
   }, [dispatch, auth.token]);
+
   return (
     <Router>
       <AlertMsg />

@@ -157,7 +157,7 @@ const StatusModal = () => {
           )}
 
           <div className="input_images">
-            {/* {stream ? (
+            {stream ? (
               <i className="fas fa-camera" onClick={handleCapture} />
             ) : (
               <>
@@ -174,19 +174,7 @@ const StatusModal = () => {
                   />
                 </div>
               </>
-            )} */}
-
-            <div className="file_upload">
-              <i className="fas fa-image" />
-              <input
-                type="file"
-                name="file"
-                id="file"
-                multiple
-                accept="image/*"
-                onChange={handleChangeImages}
-              />
-            </div>
+            )}
           </div>
         </div>
 

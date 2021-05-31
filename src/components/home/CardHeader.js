@@ -9,7 +9,7 @@ import { BASE_URL } from "../../utils/config";
 import { confirm } from "react-bootstrap-confirmation";
 
 const CardHeader = ({ post }) => {
-  const { auth } = useSelector((state) => state);
+  const { auth, socket } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   const history = useHistory();
@@ -22,7 +22,7 @@ const CardHeader = ({ post }) => {
   const handleDeletePost = async () => {
     const result = await confirm("Are you really sure?");
     if (result) {
-      dispatch(deletePost({ post, auth }));
+      dispatch(deletePost({ post, auth, socket }));
       return history.push("/");
     }
   };

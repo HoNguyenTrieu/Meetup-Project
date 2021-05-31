@@ -1,11 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { POST_TYPES } from "../redux/actions/postAction";
 import { GLOBALTYPES } from "../redux/constants/globalTypes";
+import { NOTIFY_TYPES } from "../redux/actions/notifyAction";
+import audioNoti from "../audio/audio2.wav";
 
 const SocketClient = () => {
-  const { auth, socket } = useSelector((state) => state);
+  const { auth, socket, notify } = useSelector((state) => state);
   const dispatch = useDispatch();
+  const audioRef = useRef();
 
   // joinUser
   useEffect(() => {
@@ -62,7 +65,36 @@ const SocketClient = () => {
     });
     return () => socket.off("unFollowToClient");
   }, [socket, dispatch, auth]);
-  return <></>;
+
+  // Notification
+  useEffect(() => {
+    socket.on("createNotifyToClient", (msg) => {
+      dispatch({
+        type: NOTIFY_TYPES.CREATE_NOTIFY,
+        payload: msg,
+      });
+      if (notify.sound) audioRef.current.play();
+    });
+    return () => socket.off("createNotifyToClient");
+  }, [socket, dispatch, notify.sound]);
+
+  useEffect(() => {
+    socket.on("removeNotifyToClient", (msg) => {
+      dispatch({
+        type: NOTIFY_TYPES.REMOVE_NOTIFY,
+        payload: msg,
+      });
+    });
+    return () => socket.off("removeNotifyToClient");
+  }, [socket, dispatch]);
+
+  return (
+    <>
+      <audio controls ref={audioRef} style={{ display: "none" }}>
+        <source src={audioNoti} type="audio/wav" />
+      </audio>
+    </>
+  );
 };
 
 export default SocketClient;

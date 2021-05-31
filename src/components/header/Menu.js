@@ -4,9 +4,10 @@ import { Link, useLocation } from "react-router-dom";
 import { logout } from "../../redux/actions/authAction";
 import { GLOBALTYPES } from "../../redux/constants/globalTypes";
 import Avatar from "../Avatar";
+import NotifyModal from "../NotifyModal";
 
 const Menu = () => {
-  const { auth, theme } = useSelector((state) => state);
+  const { auth, theme, notify } = useSelector((state) => state);
   const dispatch = useDispatch();
   // console.log(useLocation());
   const { pathname } = useLocation();
@@ -41,13 +42,30 @@ const Menu = () => {
             ></i>
           </Link>
         </li>
-        <li className={`nav-item px-1 ${isActive("/notify")}`}>
-          <Link className="nav-link" to="/notify">
+
+        <li
+          className="nav-item dropdown"
+          style={{ opacity: notify.data.length > 0 ? "1" : "0.5" }}
+        >
+          <span
+            className="nav-link position-relative"
+            id="navbarDropdown"
+            role="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
             <i
               className="fas fa-heart text-danger"
-              style={{ filter: theme ? "invert(1)" : "invert(0)" }}
+              style={{
+                filter: theme ? "invert(1)" : "invert(0)",
+              }}
             ></i>
-          </Link>
+            <span className="notify_length">{notify.data.length}</span>
+          </span>
+          <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+            <NotifyModal />
+          </div>
         </li>
 
         <li className="nav-item dropdown" style={{ opacity: 1 }}>
