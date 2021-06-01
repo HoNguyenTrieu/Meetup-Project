@@ -6,6 +6,12 @@ const cookieParser = require("cookie-parser");
 const SocketServer = require("./socketServer");
 const path = require("path");
 var logger = require("morgan");
+const authRouter = require("./routes/authRouter");
+const userRouter = require("./routes/userRouter");
+const postRouter = require("./routes/postRouter");
+const commentRouter = require("./routes/commentRouter");
+const notifyRouter = require("./routes/notifyRouter");
+const messageRouter = require("./routes/messageRouter");
 
 const app = express();
 app.use(express.json());
@@ -23,11 +29,12 @@ io.on("connection", (socket) => {
 // Create peer server
 
 // Routes
-app.use("/api", require("./routes/authRouter"));
-app.use("/api", require("./routes/userRouter"));
-app.use("/api", require("./routes/postRouter"));
-app.use("/api", require("./routes/commentRouter"));
-app.use("/api", require("./routes/notifyRouter"));
+app.use("/api", authRouter);
+app.use("/api", userRouter);
+app.use("/api", postRouter);
+app.use("/api", commentRouter);
+app.use("/api", notifyRouter);
+app.use("/api", messageRouter);
 
 const URI = process.env.MONGODB_URL;
 mongoose.connect(
