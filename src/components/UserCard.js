@@ -9,6 +9,7 @@ const UserCard = ({
   handleClose,
   setShowFollowers,
   setShowFollowing,
+  msg,
 }) => {
   const handleCloseAll = () => {
     if (handleClose) handleClose();
@@ -17,7 +18,7 @@ const UserCard = ({
   };
   return (
     <div
-      className={`d-flex p-2 align-items-center justify-content-between ${border}`}
+      className={`d-flex p-2 align-items-center justify-content-between w-100 ${border}`}
     >
       <div>
         <Link
@@ -28,7 +29,24 @@ const UserCard = ({
           <Avatar src={user.avatar} size="big-avatar" />
           <div className="ml-1" style={{ transform: "translateY(-2px)" }}>
             <span className="d-block">{user.username}</span>
-            <small style={{ opacity: 0.7 }}>{user.fullname}</small>
+            <small style={{ opacity: 0.7 }}>
+              {msg ? (
+                <>
+                  <div>
+                    {user.text.length > 23
+                      ? user.text.slice(0, 23) + "..."
+                      : user.text}
+                  </div>
+                  {user.media.length > 0 && (
+                    <div>
+                      {user.media.length} <i className="fas fa-image" />
+                    </div>
+                  )}
+                </>
+              ) : (
+                user.fullname
+              )}
+            </small>
           </div>
         </Link>
       </div>

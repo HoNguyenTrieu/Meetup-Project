@@ -28,6 +28,11 @@ const StatusModal = () => {
       ) {
         return (err = "Image format is incorrect.");
       }
+
+      if (file.size > 1024 * 1024 * 5) {
+        return (err = "The image largest is 5mb");
+      }
+
       return newImages.push(file);
     });
     if (err) dispatch({ type: GLOBALTYPES.ALERT, payload: { error: err } });
