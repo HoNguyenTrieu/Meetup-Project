@@ -50,10 +50,9 @@ function App() {
 
           <Route exact path="/" component={auth.token ? home : login} />
           <Route exact path="/register" component={Register} />
-          <div style={{ marginBottom: "50px" }}>
-            <PrivateRouter exact path="/:page" component={PageRender} />
-            <PrivateRouter exact path="/:page/:id" component={PageRender} />
-          </div>
+
+          <PrivateRouter exact path="/:page" component={PageRender} />
+          <PrivateRouter exact path="/:page/:id" component={PageRender} />
         </div>
       </div>
     </Router>
