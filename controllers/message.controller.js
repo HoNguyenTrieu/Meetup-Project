@@ -16,9 +16,10 @@ APIfeatures.prototype.paginating = function () {
 const messageController = {
   createMessage: async (req, res) => {
     try {
-      const { recipient, text, media } = req.body;
+      const { sender, recipient, text, media } = req.body;
 
       if (!recipient || (!text.trim() && media.length === 0)) return;
+
       const newConversation = await Conversations.findOneAndUpdate(
         {
           $or: [
@@ -33,41 +34,46 @@ const messageController = {
         },
         { new: true, upsert: true }
       );
+
       const newMessage = new Messages({
-        conversation: newConversation,
+        conversation: newConversation._id,
         sender: req.user._id,
         recipient,
         text,
         media,
       });
+
       await newMessage.save();
 
-      res.json({ msg: "Create message success!" });
+      res.json({ msg: "Create Success!" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
   },
   getConversations: async (req, res) => {
     try {
-      const data = new APIfeatures(
+      const features = new APIfeatures(
         Conversations.find({
           recipients: req.user._id,
         }),
         req.query
       ).paginating();
 
-      const conversations = await data.query
+      const conversations = await features.query
         .sort("-updatedAt")
         .populate("recipients", "avatar username fullname");
 
-      res.json({ conversations, result: conversations.length });
+      res.json({
+        conversations,
+        result: conversations.length,
+      });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
   },
   getMessages: async (req, res) => {
     try {
-      const data = new APIfeatures(
+      const features = new APIfeatures(
         Messages.find({
           $or: [
             { sender: req.user._id, recipient: req.params.id },
@@ -77,9 +83,12 @@ const messageController = {
         req.query
       ).paginating();
 
-      const messages = await data.query.sort("-createdAt");
+      const messages = await features.query.sort("-createdAt");
 
-      res.json({ messages, result: messages.length });
+      res.json({
+        messages,
+        result: messages.length,
+      });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
