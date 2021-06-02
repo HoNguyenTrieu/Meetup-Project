@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import UserCard from "../UserCard";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -6,7 +6,11 @@ import MsgDisplay from "./MsgDisplay";
 import { imageShow } from "../../utils/mediaShow";
 import { GLOBALTYPES } from "../../redux/constants/globalTypes";
 import { imageUpload } from "../../utils/imageUpload";
-import { addMessage, getMessages } from "../../redux/actions/messageAction";
+import {
+  addMessage,
+  getMessages,
+  MESS_TYPES,
+} from "../../redux/actions/messageAction";
 import LoadIcon from "../../images/loadingMess.gif";
 
 const RightSide = () => {
@@ -18,15 +22,29 @@ const RightSide = () => {
   const [text, setText] = useState("");
   const [media, setMedia] = useState([]);
   const [loadMedia, setLoadMedia] = useState(false);
+  const refDisplay = useRef();
+  const [data, setData] = useState([]);
 
   useEffect(() => {
-    const newUser = message.users.find((user) => user._id === id);
-    if (newUser) {
-      setUser(newUser);
+    const newData = message.data.filter(
+      (item) => item.sender === auth.user._id || item.sender === id
+    );
+    setData(newData);
+  }, [message.data, auth.user._id, id]);
+
+  useEffect(() => {
+    if (id && message.users.length > 0) {
+      setTimeout(() => {
+        refDisplay.current.scrollIntoView({ behavior: "smooth", block: "end" });
+      }, 50);
+      const newUser = message.users.find((user) => user._id === id);
+      if (newUser) {
+        setUser(newUser);
+      }
     }
   }, [message.users, id]);
 
-  const handleChange = (e) => {
+  const handleChangeImage = (e) => {
     const files = [...e.target.files];
     let err = "";
     let newMedia = [];
@@ -76,17 +94,33 @@ const RightSide = () => {
     };
 
     setLoadMedia(false);
-    dispatch(addMessage({ msg, auth, socket }));
+    await dispatch(addMessage({ msg, auth, socket }));
+    if (refDisplay.current) {
+      refDisplay.current.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    }
   };
 
   useEffect(() => {
-    if (id) {
-      const getMessagesData = async () => {
-        await dispatch(getMessages({ auth, id }));
-      };
-      getMessagesData();
-    }
+    const getMessagesData = async () => {
+      await dispatch(getMessages({ auth, id }));
+      setTimeout(() => {
+        refDisplay.current.scrollIntoView({ behavior: "smooth", block: "end" });
+      }, 50);
+    };
+    getMessagesData();
   }, [id, dispatch, auth]);
+
+  // useEffect(() => {
+  //   if (refDisplay.current) {
+  //     refDisplay.current.scrollIntoView({
+  //       behavior: "smooth",
+  //       block: "end",
+  //     });
+  //   }
+  // }, [text]);
 
   return (
     <>
@@ -102,8 +136,8 @@ const RightSide = () => {
         className="chat_container"
         style={{ height: media.length > 0 ? "calc(100% - 180px)" : "" }}
       >
-        <div className="chat_display">
-          {message.data.map((msg, index) => (
+        <div className="chat_display" ref={refDisplay}>
+          {data.map((msg, index) => (
             <div key={index}>
               {msg.sender !== auth.user._id && (
                 <div className="chat_row friend_message">
@@ -137,11 +171,7 @@ const RightSide = () => {
       >
         {media.map((item, index) => (
           <div key={index} id="file_media">
-            {item.type.match(/video/i) ? (
-              <h2>This file is not allowed</h2>
-            ) : (
-              imageShow(URL.createObjectURL(item), theme)
-            )}
+            {imageShow(URL.createObjectURL(item), theme)}
             <span onClick={() => handleDelete(index)}>&times;</span>
           </div>
         ))}
@@ -162,8 +192,8 @@ const RightSide = () => {
             name="file"
             id="file"
             multiple
-            accept="image/*,video/*"
-            onChange={handleChange}
+            accept="image/*"
+            onChange={handleChangeImage}
           />
         </div>
 

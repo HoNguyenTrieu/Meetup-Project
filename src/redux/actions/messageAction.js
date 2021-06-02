@@ -23,7 +23,7 @@ export const addMessage =
   ({ msg, auth, socket }) =>
   async (dispatch) => {
     dispatch({ type: MESS_TYPES.ADD_MESSAGE, payload: msg });
-
+    socket.emit("addMessage", msg);
     try {
       await postDataAPI("message", msg, auth.token);
     } catch (err) {
@@ -41,9 +41,9 @@ export const getConversations =
       const res = await getDataAPI("conversations", auth.token);
       let newArr = [];
       res.data.conversations.forEach((item) => {
-        item.recipients.forEach((i) => {
-          if (i._id === auth.user._id) {
-            newArr.push({ ...i, text: item.text, media: item.media });
+        item.recipients.forEach((cv) => {
+          if (cv._id === auth.user._id) {
+            newArr.push({ ...cv, text: item.text, media: item.media });
           }
         });
       });
@@ -64,6 +64,7 @@ export const getMessages =
   async (dispatch) => {
     try {
       const res = await getDataAPI(`message/${id}`, auth.token);
+
       dispatch({ type: MESS_TYPES.GET_MESSAGES, payload: res.data });
     } catch (err) {
       dispatch({

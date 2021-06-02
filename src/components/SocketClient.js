@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { POST_TYPES } from "../redux/actions/postAction";
 import { GLOBALTYPES } from "../redux/constants/globalTypes";
 import { NOTIFY_TYPES } from "../redux/actions/notifyAction";
+import { MESS_TYPES } from "../redux/actions/messageAction";
 import audioNoti from "../audio/audio2.wav";
 
 const SocketClient = () => {
@@ -86,6 +87,17 @@ const SocketClient = () => {
       });
     });
     return () => socket.off("removeNotifyToClient");
+  }, [socket, dispatch]);
+
+  // Message
+  useEffect(() => {
+    socket.on("addMessageToClient", (msg) => {
+      dispatch({
+        type: MESS_TYPES.ADD_MESSAGE,
+        payload: msg,
+      });
+    });
+    return () => socket.off("addMessageToClient");
   }, [socket, dispatch]);
 
   return (
